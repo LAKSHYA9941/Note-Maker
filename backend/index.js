@@ -14,11 +14,16 @@ const { authenticateToken } = require("./utilities");
 
 const app = express();
 
+const clientOrigin = 'https://automatic-space-chainsaw-xxwx4w9xrjwcvwv9-5173.app.github.dev';
+
 app.use(cors({
-  origin: "*",
+  origin: clientOrigin, 
+  // origin: "*"
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
+  allowedHeaders: ["Content-Type", "Authorization"], 
 }));
+
+
 
 
 app.use(express.json());
