@@ -1,39 +1,32 @@
-require("dotenv").config()
-const config = require("./config.json")
+require("dotenv").config();
+const config = require("./config.json");
 
-const mongoose = require("mongoose")
-mongoose.connect(config.connectionString)
+const mongoose = require("mongoose");
+mongoose.connect(config.connectionString);
 
-const User = require("./models/user-model")
-const Note = require("./models/notes-model")
 const express = require("express");
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
+
+const User = require("./models/user-model");
+const Note = require("./models/notes-model");
+const { authenticateToken } = require("./utilities");
+
 const app = express();
 
-app.use(express.json())
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
-const jwt = require("jsonwebtoken")
-const { authenticateToken } = require("./utilities")
 
-app.use(
-  cors({
-    origin: "https://automatic-space-chainsaw-xxwx4w9xrjwcvwv9-5173.app.github.dev",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"]
-  })
-)
+app.use(express.json());
+
 
 app.get("/", (req, res) => {
   res.json({ data: "hellieo worlds" })
 })
-
-
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://automatic-space-chainsaw-xxwx4w9xrjwcvwv9-5173.app.github.dev');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); // Include methods your API supports
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Include headers your client sends
-  next();
-});
 
 
 //creating account 
@@ -131,7 +124,7 @@ app.get("/get-user", authenticateToken, async (req, res) => {
   const isUser = await User.findOne({ _id: user._id })
 
   if (!isUser) {
-    return res.status(401).json({error:true,message:"user not found"})
+    return res.status(401).json({ error: true, message: "user not found" })
   }
 
   return res.json({
