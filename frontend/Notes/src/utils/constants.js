@@ -1,0 +1,1 @@
+export const BASE_URL="https://automatic-space-chainsaw-xxwx4w9xrjwcvwv9-8000.app.github.dev"
