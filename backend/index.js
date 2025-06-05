@@ -14,21 +14,27 @@ const { authenticateToken } = require("./utilities");
 
 const app = express();
 
-const clientOrigin = 'https://automatic-space-chainsaw-xxwx4w9xrjwcvwv9-5173.app.github.dev';
+const clientOrigin = "https://automatic-space-chainsaw-xxwx4w9xrjwcvwv9-5173.app.github.dev"
 
 app.use(cors({
-  origin: clientOrigin, 
-  // origin: "*"
+  origin: clientOrigin,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"], 
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
 }));
 
+
+// app.options("*", cors());
+
+// app.use((req, res, next) => {
+//   res.header("Access-Control-Allow-Origin", "*"); 
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+//   next();
+// });
 
 
 
 app.use(express.json());
-
-
 
 app.get("/", (req, res) => {
   res.json({ data: "hellieo worlds" })
@@ -89,6 +95,7 @@ app.post("/create-account", async (req, res) => {
 
 //login API
 app.post("/login", async (req, res) => {
+
   const { email, password } = req.body
 
   if (!email) {

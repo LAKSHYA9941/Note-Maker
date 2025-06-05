@@ -26,12 +26,13 @@ const Login = () => {
         }
         setError("")
 
-        //Login API will be called
+        //Login API will be called here
         try {
             const response = await axiosInstance.post("/login", {
                 email: email,
                 password: password
             })
+
             if (response.data && response.data.accesstoken) {
                 localStorage.setItem("token", response.data.accesstoken)
                 navigate("/dashboard")
